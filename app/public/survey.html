@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Friend Finder Survey</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://surveyjs.azureedge.net/1.0.6/survey.jquery.min.js"></script>
+	<style type="text/css">
+		img{
+			max-width: 400px;
+		}
+	</style>
+</head>
+
+<body>
+	    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">Friend Finder</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/survey">Find a Friend</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+
+	<div id="surveyContainer"></div>
+
+	
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <div id="matchPicture"></div>
+	        <br>
+	        <div id="matchName"></div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+
+
+
+
+
+
+
+	<script type="text/javascript">
+		
+		Survey.Survey.cssType = "bootstrap";
+
+		var surveyJSON = {pages:[{name:"page1",elements:[{type:"text",name:"name",title:"What is your name?",isRequired:true},{type:"text",name:"photo",title:"Link a picture of you",isRequired:true,inputType:"url",placeHolder:"http://defendernetwork.com/wp-content/uploads/2017/07/will_smith.jpg"},{type:"rating",name:"q1",title:"How important is career to you?",isRequired:true,minRateDescription:"Unimportant",maxRateDescription:"Very Important"},{type:"rating",name:"q2",title:"Do you enjoy travelling?",isRequired:true,minRateDescription:":(",maxRateDescription:"Yay!!!!!"},{type:"rating",name:"q3",title:"How do you feel about disagreements",isRequired:true,minRateDescription:"Worse than Hitler",maxRateDescription:"I'm open to discussion"},{type:"rating",name:"q4",title:"Do you enjoy parties?",isRequired:true,minRateDescription:"No",maxRateDescription:"All day everyday!"},{type:"rating",name:"q5",title:"What is your general disposition",isRequired:true,minRateDescription:"Everything is awful! ",maxRateDescription:"Everything is Awesome!"}]},{name:"page2",elements:[{type:"rating",name:"q6",title:"How does this question make you feel?   \nShouldn't awFUL be better than aweSOME? ",isRequired:true,minRateDescription:"I am not amused",maxRateDescription:"I had that same thought"},{type:"rating",name:"q7",title:"Donald Trump?",isRequired:true,minRateDescription:":(",maxRateDescription:"(:"},{type:"rating",name:"q8",title:"Birthday Parties",isRequired:true,minRateDescription:"Nay",maxRateDescription:"Yay"},{type:"rating",name:"q9",title:"How do you feel about reading",isRequired:true,minRateDescription:"Ewww",maxRateDescription:"Best thing ever"},{type:"rating",name:"q10",title:"How do you feel about motorcyclists",isRequired:true,minRateDescription:"I hate excitement and fun",maxRateDescription:"I'd hit that"}]}]}
+
+		function sendDataToServer(survey) {
+		    //send Ajax request to your web server.
+
+		 //   alert("The results are:" + JSON.stringify(survey.data));
+
+		    $.post("/api/friends", survey.data,
+        		function(data) {
+
+        			$("#matchPicture").html("<img src='" + data.photo +" '>");
+        			$("#matchName").text("You matched with " + data.name);
+        			jQuery("#myModal").modal({show: true});
+
+        			$('#myModal').on('hidden.bs.modal', function (e) {
+        				window.location.href = "/";
+					})
+		        });
+			}
+
+		var survey = new Survey.Model(surveyJSON);
+		$("#surveyContainer").Survey({
+		    model:survey,
+		    onComplete:sendDataToServer
+		});
+
+
+
+
+	</script>
+
+
+</body>
+
+</html>
+
+
+
+
+

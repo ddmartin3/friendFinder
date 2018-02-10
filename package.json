@@ -1,0 +1,28 @@
+{
+  "name": "friendfinder",
+  "version": "1.0.0",
+  "description": "A dating/friend compatability app",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddmartin3/friendFinder.git"
+  },
+  "keywords": [
+    "matching"
+  ],
+  "author": "Darwood Martin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ddmartin3/friendFinder/issues"
+  },
+  "homepage": "https://github.com/ddmartin3/friendFinder#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "survey-jquery": "^1.0.6"
+  }
+}
